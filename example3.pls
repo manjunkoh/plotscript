@@ -1,0 +1,11 @@
+(begin 
+    (define a 42)
+    (define b (+ 34 a))
+    (define c (+ 89 b))
+    (define d (+ -3 c ))
+    (define x (+ 95 d))
+    (define f (+ 4 x))
+    (define g (+ -9 f))
+    (define h (+ 32 g))
+    (/ h 8 )
+)

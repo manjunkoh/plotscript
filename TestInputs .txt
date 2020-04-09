@@ -1,0 +1,259 @@
+sample test input
+
+Attachments area
+Received, thank you.Got it, thanks!Thanks a lot.
+
+Test Strings type--------------------------------------------------
+plotscript>("foo")
+("foo")
+plotscript> ("a string with spaces")
+("a string with spaces")
+plotscript> (define x ("foo"))
+("foo")
+plotscript> (x)
+("foo")
+plotscript> (define mylist (list "eggs" "bread" "milk" "bacon"))
+(("eggs") ("bread") ("milk") ("bacon"))
+plotscript> (first mylist)
+("eggs")
+-------------------------------------------------------------------
+
+Test Property List--------------------------------------------------
+Set:
+plotscript> (set-property "number" "three" (3))
+(3)
+plotscript> (set-property "number" (3) "three")
+("three")
+plotscript> (set-property "number" (+ 1 2) "three")
+("three")
+plotscript> (set-property "label" "foo" (lambda (x) (* 3 (+ 2 x))))
+(((x)) (* (3) (+ (2) (x))))
+plotscript> (set-property (+ 1 2) "number" "three")
+Error: first argument to set-property not a string
+
+Get:
+plotscript> (define a (+ 1 I))
+(1,1)
+plotscript> (define b (set-property "note" "a complex number" a))
+(1,1)
+plotscript> (get-property "note" b)
+("a complex number")
+plotscript> (get-property "foo" b)
+NONE
+---------------------------------------------------------------------
+
+Graphic Primitives-----------------------------------------------------
+make-point :
+
+(define point (make-point 3 4))
+((3) (4))
+(get-property "object-name" point)
+("point")
+(get-property "size" point)
+(0)
+
+make-line:
+
+(define line (make-line (make-point 5 6) (make-point 1 2)))
+(((5)(6)) ((1)(2)))
+(get-property "object-name" line)
+("line")
+(get-property "thickness" line)
+(1)
+
+make-text:
+(define text (make-text "Words"))
+("Words")
+(get-property "object-name" text)
+("text")
+(get-property "position" text)
+((0) (0))
+---------------------------------------------------------------
+
+GUI
+
+
+(list 
+(set-property "size" 1 (make-point 0 0 ))
+(set-property "size" 2 (make-point 0 4))
+(set-property "size" 4 (make-point 0 8))
+(set-property "size" 8 (make-point 0 16))
+(set-property "size" 16 (make-point 0 32))
+(set-property "size" 32 (make-point 0 64))
+)
+
+(list 
+(set-property "size" 1 (make-point 0 0 ))
+(set-property "size" 2 (make-point 4 0))
+(set-property "size" 4 (make-point 8 0))
+(set-property "size" 8 (make-point 16 0))
+(set-property "size" 16 (make-point 32 0))
+(set-property "size" 32 (make-point 64 0))
+)
+
+(define inc (lambda (x) (+ x 1)))
+
+(cos pi)
+(get-property "key" (3))
+
+(begin 
+	(define title "The Title")
+	(title)
+)
+
+(define inc (lambda (x) (+ x 1)))
+
+(set-property "size" 20 (make-point 0 0))
+(make-point 0 0)  - explain positioning
+
+(make-line 
+	(make-point 0 0)
+	(make-point 20 20))
+
+
+(set-property "thickness" (4)
+	(make-line 
+		(make-point 0 0)
+		(make-point 20 20))
+)
+
+
+(list 
+	(make-line
+		(make-point 0 0)
+		(make-point 0 20))
+	(make-line 
+		(make-point 10 0)
+		(make-point 10 20))
+	(make-line
+		(make-point 20 0)
+		(make-point 20 20))
+)
+
+(list 
+	(make-line
+		(make-point 0 0)
+		(make-point 20 0))
+	(make-line 
+		(make-point 0 10)
+		(make-point 20 10))
+	(make-line
+		(make-point 0 20)
+		(make-point 20 20))
+)
+	
+
+(make-text "Hello World!")	
+
+(begin
+(define xloc 0)
+(define yloc 0)
+(list
+(set-property "position" (make-point (+ xloc 20 ) yloc) (make-text "Hi"))
+(set-property "position" (make-point (+ xloc 40 ) yloc) (make-text "Hi"))
+(set-property "position" (make-point (+ xloc 60 ) yloc) (make-text "Hi"))
+(set-property "position" (make-point (+ xloc 80 ) yloc) (make-text "Hi"))
+(set-property "position" (make-point (+ xloc 100 ) yloc) (make-text "Hi"))
+)
+)
+
+(begin ))
+
+(begin
+	(define a I)
+	(first a)
+)
+
+(define t (set-property "text-scale" 10 (make-text "Hello World!")))
+
+
+// test for discrete plot 
+
+(discrete-plot (list (list -1 -1) (list 1 1))) 
+
+(((-10) (10))
+(((-10) (-0)) ((-10) (10))) // make line base on point
+((10) (-10)) 
+(((10) (-0)) ((10) (-10))) // make line base on point
+
+(((0) (10)) ((0) (-10)))    // x-axis
+(((-10) (-0)) ((10) (-0)))  // y-axis
+
+(((-10) (10)) ((10) (10)))   // top box line
+(((-10) (-10)) ((10) (-10))) // bottom box line
+(((-10) (10)) ((-10) (-10))) // left box line
+(((10) (10)) ((10) (-10)))   // right box line
+("-1") 
+("1")
+("-1") 
+("1") 
+("The Title") ("X Label") ("Y Label"))
+
+(discrete-plot (map f (range -2 2 0.5)) (list (list "title" "The Data") (list "abscissa-label" "X Label") (list "ordinate-label" "Y Label")))
+
+(begin
+    (define f (lambda (x) 
+        (list x (+ (* 2 x) 1))))
+    (discrete-plot (map f (range -20 -2 0.5))
+       (list
+       (list "title" "The Data")
+       (list "abscissa-label" "X Label")
+       (list "ordinate-label" "Y Label")
+       (list "text-scale" 1))))
+	   
+(begin
+(define f (lambda (x) 
+	(list x (+ (* (- x 5)  (- x 5)) 5))))
+(discrete-plot (map f (range 0 10 0.5))
+   (list
+   (list "title" "The Data")
+   (list "abscissa-label" "X Label")
+   (list "ordinate-label" "Y Label")
+   (list "text-scale" 1))))
+
+(begin
+    (define f (lambda (x) 
+        (list x (+ (* (- x 5)  (- x 5)) +5))))
+    (discrete-plot (map f (range 1 5 0.5))
+       (list
+       (list "title" "The Data")
+       (list "abscissa-label" "X Label")
+       (list "ordinate-label" "Y Label")
+       (list "text-scale" 1))))
+
+(begin
+    (define f (lambda (x) 
+        (list x (+ (* (- x 5)  (- x 5) -1) -5))))
+    (discrete-plot (map f (range -1 5 0.5))
+       (list
+       (list "title" "The Data")
+       (list "abscissa-label" "X Label")
+       (list "ordinate-label" "Y Label")
+       (list "text-scale" 1))))
+//plot in 3rd quadrant for axis check 
+(begin
+    (define f (lambda (x) 
+        (list x (+ (* (+ x 5)  (+ x 5) -1) -5))))
+    (discrete-plot (map f (range -9 -1 0.5))
+       (list
+       (list "title" "The Data")
+       (list "abscissa-label" "X Label")
+       (list "ordinate-label" "Y Label")
+       (list "text-scale" 1))))
+	   
+(begin
+    (define f (lambda (x) 
+        (+ (* 2 x) 1))) 
+    (continuous-plot f (list -2 2)
+        (list
+        (list "title" "A continuous linear function")
+        (list "abscissa-label" "x")
+        (list "ordinate-label" "y"))))
+(begin
+    (define f (lambda (x) 
+        (+ (sin x) 1))) 
+    (continuous-plot f (list -4 4)
+        (list
+        (list "title" "A continuous linear function")
+        (list "abscissa-label" "x")
+        (list "ordinate-label" "y"))))
